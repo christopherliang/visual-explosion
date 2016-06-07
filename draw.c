@@ -54,13 +54,32 @@ void draw_polygons( struct matrix *polygons, screen s, color c ) {
   for( i=0; i < polygons->lastcol-2; i+=3 ) {
 
     if ( calculate_dot( polygons, i ) < 0 ) {
-      int bottom_x = polygons->m[0][i];
-      int bottom_y = polygons->m[1][i];
-      int middle_x = polygons->m[0][i+1];
-      int middle_y = polygons->m[1][i+1];
-      int top_x = polygons->m[0][i+2];
-      int top_y = polygons->m[1][i+2];
-      int slope_bt = (
+      int xB = polygons->m[0][i];
+      int yB = polygons->m[1][i];
+      int xM = polygons->m[0][i+1];
+      int yM = polygons->m[1][i+1];
+      int xT = polygons->m[0][i+2];
+      int yT = polygons->m[1][i+2];
+      //int slope_bt = (yT - yB)/(xT - xB);
+      //int delta0 = (int)((xT - xB) / (yT - yB));
+      //int delta1 = (int)((xM - xB) / (yM - yB));
+      //printf("delta0: %d", delta0);
+      //printf("delta1: %d", delta1);
+      //draw_line( xB, yB, xB, yB, s, c);
+      int x0 = xB;
+      int y0 = yB;
+      int x1 = xB;
+      int y1 = yB;
+      //while (y0 < yT) {
+      //if (y0 > yM) {
+	  //delta1 =(int)((xT - xM) / (yT - yM));
+      //}
+	//x0 += delta0;
+	//y0 += 1;
+	//x1 += delta1;
+	//y1 += 1;
+	//draw_line( x0, y0, x1, y1, s, c);
+      //}
       draw_line( polygons->m[0][i],
 		 polygons->m[1][i],
 		 polygons->m[0][i+1],
