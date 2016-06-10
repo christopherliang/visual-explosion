@@ -54,37 +54,46 @@ void draw_polygons( struct matrix *polygons, screen s, color c ) {
   for( i=0; i < polygons->lastcol-2; i+=3 ) {
 
     if ( calculate_dot( polygons, i ) < 0 ) {
-      int xB = polygons->m[0][i];
-      int yB = polygons->m[1][i];
-      int xM = polygons->m[0][i+1];
-      int yM = polygons->m[1][i+1];
-      int xT = polygons->m[0][i+2];
-      int yT = polygons->m[1][i+2];
+      double xM = (double)polygons->m[0][i];
+      double yM = (double)polygons->m[1][i];
+      double xB = (double)polygons->m[0][i+1];
+      double yB = (double)polygons->m[1][i+1];
+      double xT = (double)polygons->m[0][i+2];
+      double yT = (double)polygons->m[1][i+2];
       //printf("xB: %d ", xB);
       //printf("yB: %d ", yB);
       //printf("xM: %d ", xM);
       //printf("yM: %d ", yM);
       //printf("xT: %d ", xT);
       //printf("yT: %d\n", yT);
+      if ( yT == yB ) {
+	printf("yT == yB\n");
+      }
+      if ( yM == yB ) {
+	printf("yM == yB\n");
+      }
+      if ( yM == yT ) {
+	printf("yM == yT\n");
+      }
       if (yT != yB && yM != yB && yM != yT) {
-	int delta0 = (int)((xT - xB) / (yT - yB));
-	int delta1 = (int)((xM - xB) / (yM - yB));
-	printf("delta0: %d\n", delta0);
-	printf("delta1: %d\n", delta1);
+	double delta0 = ((xT - xB) / (yT - yB));
+	double delta1 = ((xM - xB) / (yM - yB));
+	printf("delta0: %f\n", delta0);
+	printf("delta1: %f\n", delta1);
 	draw_line( xB, yB, xB, yB, s, c);
-	int x0 = xB;
-	int y0 = yB;
-	int x1 = xB;
-	int y1 = yB;
+	double x0 = xB;
+	double y0 = yB;
+	double x1 = xB;
+	double y1 = yB;
 	while (y0 < yT) {
-	  if (y0 > yM) {
+	  if (y0 == yM) {
 	    delta1 = (xT - xM) / (yT - yM);
 	  }
 	  x0 += delta0;
 	  y0 += 1;
 	  x1 += delta1;
 	  y1 += 1;
-	  draw_line( x0, y0, x1, y1, s, c);
+	  draw_line( (int)x0, (int)y0, (int)x1, (int)y1, s, c);
 	}
 	
       }
