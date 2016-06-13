@@ -52,14 +52,32 @@ void draw_polygons( struct matrix *polygons, screen s, color c ) {
   
   int i;
   for( i=0; i < polygons->lastcol-2; i+=3 ) {
-
     if ( calculate_dot( polygons, i ) < 0 ) {
-      double xM = (double)polygons->m[0][i];
-      double yM = (double)polygons->m[1][i];
-      double xB = (double)polygons->m[0][i+1];
-      double yB = (double)polygons->m[1][i+1];
-      double xT = (double)polygons->m[0][i+2];
-      double yT = (double)polygons->m[1][i+2];
+      int tmp, bot_i, mid_i, top_i;
+      bot_i = 0;
+      for (tmp=0; tmp < 3; tmp++) {
+	if (polygons->m[1][i + tmp] < polygons->m[1][i + bot_i]) {
+	  bot_i = tmp;
+	}
+      }
+      top_i = 0;
+      for (tmp=0; tmp < 3; tmp++) {
+	if (polygons->m[1][i + tmp] > polygons->m[1][i + top_i]){
+	  top_i = tmp;
+	}
+      }
+      for (tmp = 0; tmp < 3; tmp++) {
+	if (tmp != top_i && tmp != bot_i){
+	  mid_i = tmp;
+	}
+      }
+      printf("bot_i: %d mid_i: %d top_i: %d\n", bot_i, mid_i, top_i);
+      double xM = (double)polygons->m[0][i + mid_i];
+      double yM = (double)polygons->m[1][i + mid_i];
+      double xB = (double)polygons->m[0][i + bot_i];
+      double yB = (double)polygons->m[1][i + bot_i];
+      double xT = (double)polygons->m[0][i + top_i];
+      double yT = (double)polygons->m[1][i + top_i];
       //printf("xB: %d ", xB);
       //printf("yB: %d ", yB);
       //printf("xM: %d ", xM);
@@ -75,18 +93,19 @@ void draw_polygons( struct matrix *polygons, screen s, color c ) {
       if ( yM == yT ) {
 	printf("yM == yT\n");
       }
+      
       if (yT != yB && yM != yB && yM != yT) {
 	double delta0 = ((xT - xB) / (yT - yB));
 	double delta1 = ((xM - xB) / (yM - yB));
-	printf("delta0: %f\n", delta0);
-	printf("delta1: %f\n", delta1);
+	//printf("delta0: %f\n", delta0);
+	//printf("delta1: %f\n", delta1);
 	draw_line( xB, yB, xB, yB, s, c);
 	double x0 = xB;
 	double y0 = yB;
 	double x1 = xB;
 	double y1 = yB;
 	while (y0 < yT) {
-	  if (y0 == yM) {
+	  if (y0 >= yM) {
 	    delta1 = (xT - xM) / (yT - yM);
 	  }
 	  x0 += delta0;
@@ -95,7 +114,7 @@ void draw_polygons( struct matrix *polygons, screen s, color c ) {
 	  y1 += 1;
 	  draw_line( (int)x0, (int)y0, (int)x1, (int)y1, s, c);
 	}
-	
+      
       }
       draw_line( polygons->m[0][i],
 		 polygons->m[1][i],
@@ -116,6 +135,7 @@ void draw_polygons( struct matrix *polygons, screen s, color c ) {
     }
   }
 }
+
 
 
 /*======== void add_sphere() ==========
