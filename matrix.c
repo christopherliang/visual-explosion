@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <limits.h>
 
 #include "matrix.h"
 
@@ -170,6 +171,16 @@ void copy_matrix(struct matrix *a, struct matrix *b) {
   for (r=0; r < a->rows; r++) 
     for (c=0; c < a->cols; c++)  
       b->m[r][c] = a->m[r][c];  
+}
+
+void new_zbuff(struct matrix *zbuff) {
+  zbuff = new_matrix(500, 500);
+  int i, j;
+  for (i = 0; i < 500; i++) {
+    for (j = 0; j < 500; j++) {
+      zbuff->m[i][j] = INT_MIN;
+    }
+  }
 }
 
 /*======== struct matrix * make_translate() ==========

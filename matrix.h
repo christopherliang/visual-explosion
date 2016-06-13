@@ -19,6 +19,7 @@ void print_matrix(struct matrix *m);
 void ident(struct matrix *m);
 void scalar_mult(double x, struct matrix *m);
 void matrix_mult(struct matrix *a, struct matrix *b);
+void new_zbuff(struct matrix *zbuff);
 
 //transformation routines
 struct matrix * make_translate(double x, double y, double z);

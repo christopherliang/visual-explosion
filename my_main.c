@@ -319,11 +319,12 @@ void process_knobs() {
   ====================*/
 void my_main( int polygons ) {
 
-  int i, f, j;
+  int i, f, j, zbuff_i;
   double step;
   double xval, yval, zval, knob_value;
   struct matrix *transform;
   struct matrix *tmp;
+  struct matrix *zbuff;
   struct stack *s;
   screen t;
   color g;
@@ -339,6 +340,7 @@ void my_main( int polygons ) {
   g.green = 255;
   g.blue = 255;
 
+  new_zbuff(zbuff);
 
   first_pass();
 
@@ -351,6 +353,7 @@ void my_main( int polygons ) {
 
     s = new_stack();
     tmp = new_matrix(4, 1000);
+    zbuff = new_matrix(500, 500);
     clear_screen( t );
 
     //if there are multiple frames, set the knobs
